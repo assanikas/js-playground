@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html class="h-100">
+  <head>
+    <meta charset="UTF-8" />
+    <title>SPA SDK Sample</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="/css/auth0-theme.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="/css/custom.css" />
+    <link
+      rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/monokai-sublime.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.7.2/css/solid.css"
+      integrity="sha384-r/k8YTFqmlOaqRkZuSiE9trsrDXkh07mRaoGBMoDcmA58OHILZPsk29i2BsFng1B"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.7.2/css/fontawesome.css"
+      integrity="sha384-4aon80D8rXCGx9ayDt85LbyUHeMWd3UiBaWliBlJ53yzm9hqN21A+o1pqoyK04h+"
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.auth0.com/js/auth0-samples-theme/1.0/css/auth0-theme.min.css"
+    />
+
+    <link 
+    rel="stylesheet" 
+    href="https://use.typekit.net/cfo4ydg.css"
+    />
+
+  </head>
+
+  <body class="h-100">
+
+    <div id="app" class="h-100 d-flex flex-column">
+      <div class="nav-container">
+        <nav class="navbar navbar-expand-md navbar-light bg-light">
+          <div class="container">
+            <div class="navbar-brand logo" style="background-image: url(/images/pizza_logo.png); background-size: 100%; height: 80px; width: 60px;"></div>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                  <a href="/" class="nav-link route-link" style="font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; font-family: futura-pt;">Home</a>
+                </li>
+                <li class="nav-itemm">
+                  <a onclick="loadPizzas()" class="nav-link route-link2" style="font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; font-family: futura-pt; cursor:pointer;">Pizzas</a>
+                </li>
+                <li class="nav-itemm">
+                  <a onclick="loadDrinks()" class="nav-link route-link3" style="font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; font-family: futura-pt;cursor:pointer;">Drinks</a>
+                </li>
+              </ul>
+              <ul class="navbar-nav d-none d-md-block">
+                <!-- Login button: show if NOT authenticated -->
+                <li class="nav-item auth-invisible">
+                  <button
+                    id="qsLoginBtn"
+                    onclick="login()"
+                    class="btn btn-primary btn-margin auth-invisible hidden"
+                    style="background-color: rgb(224, 30, 60); border: none;"
+                  >
+                    Log in
+                  </button>
+                </li>
+                <!-- / Login button -->
+
+                <!-- Fullsize dropdown: show if authenticated -->
+                <li class="nav-item dropdown auth-visible hidden">
+                  <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    id="profileDropDown"
+                    data-toggle="dropdown"
+                  >
+                    <!-- Profile image should be set to the profile picture from the id token -->
+                    <img
+                      alt="Profile picture"
+                      class="nav-user-profile profile-image rounded-circle"
+                      width="50"
+                    />
+                  </a>
+                  <div class="dropdown-menu">
+                    <!-- Show the user's full name from the id token here -->
+                    <div class="dropdown-header nav-user-name user-name"></div>
+                    <a
+                      href="/profile"
+                      class="dropdown-item dropdown-profile route-link"
+                    >
+                      <i class="fas fa-user mr-3"></i> Profile
+                    </a>
+                    <a
+                      href="#"
+                      class="dropdown-item"
+                      id="qsLogoutBtn"
+                      onclick="logout()"
+                    >
+                      <i class="fas fa-power-off mr-3"></i> Log out
+                    </a>
+                  </div>
+                </li>
+                <!-- /Fullsize dropdown -->
+              </ul>
+
+              <!-- Responsive login button: show if NOT authenticated -->
+              <ul class="navbar-nav d-md-none auth-invisible">
+                <button
+                  class="btn btn-primary btn-block auth-invisible hidden"
+                  id="qsLoginBtn"
+                  onclick="login()"
+                >
+                  Log in
+                </button>
+              </ul>
+              <!-- /Responsive login button -->
+
+              <!-- Responsive profile dropdown: show if authenticated -->
+              <ul
+                class="navbar-nav d-md-none auth-visible hidden justify-content-between"
+                style="min-height: 125px"
+              >
+                <li class="nav-item">
+                  <span class="user-info">
+                    <!-- Profile image should be set to the profile picture from the id token -->
+                    <img
+                      alt="Profile picture"
+                      class="nav-user-profile d-inline-block profile-image rounded-circle mr-3"
+                      width="50"
+                    />
+                    <!-- Show the user's full name from the id token here -->
+                    <h6 class="d-inline-block nav-user-name user-name"></h6>
+                  </span>
+                </li>
+                <li>
+                  <i class="fas fa-user mr-3"></i>
+                  <a href="/profile" class="route-link">Profile</a>
+                </li>
+
+                <li>
+                  <i class="fas fa-power-off mr-3"></i>
+                  <a href="#" id="qsLogoutBtn" onclick="logout()">Log out</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+      </div>
+          <div id="banner" style="display:inline; height:auto; background-image: url(/images/pizza-slide6.jpg); background-repeat: no-repeat; background-size: 100%">
+                  <p class="lead" style="z-index: 5; font-family: futura-pt; text-shadow: rgba(0, 0, 0, 0.5) 0px 0px 80px; visibility: visible; text-align: center; line-height: 80px; letter-spacing: 2px; font-weight: 700; font-size: 80px; border-color: rgb(0, 0, 0); border-style: none; margin: 0px; border-radius: 0px; padding: 10px 0px; color: rgb(255, 255, 255); text-decoration: none; white-space: normal;  opacity: 1; transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); transform-origin: 50% 50% 0px;">
+              Everyone loves our <br>
+              authentic pizza recipe!
+            </p>
+          </div>
+
+      <div id="main-content" class="container mt-5 flex-grow-1">
+        <div id="content-home" class="page">
+          <div class="text-center hero">
+
+
+          </div>
+
+          <div class="next-steps" style="margin-top: -40px;">
+            <h2 class="my-5 text-center">Our Values</h2>
+
+            <div class="row">
+              <div class="col-md-5 mb-4">
+                <h6 class="mb-3">
+                  <a href="">
+                    <i class="fas fa-link"></i> Excepteur sint occaecat cupidatat non proident
+                  </a>
+                </h6>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </p>
+              </div>
+
+              <div class="col-md"></div>
+
+              <div class="col-md-5 mb-4">
+                <h6 class="mb-3">
+                  <a href="https://auth0.com/docs/multifactor-authentication">
+                    <i class="fas fa-link"></i> Neque porro quisquam
+                  </a>
+                </h6>
+                <p>
+                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+                </p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-5 mb-4">
+                <h6 class="mb-3">
+                  <a href="">
+                    <i class="fas fa-link"></i> Ut enim ad minima veniam
+                  </a>
+                </h6>
+                <p>
+                  At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.
+                </p>
+              </div>
+
+              <div class="col-md"></div>
+
+              <div class="col-md-5 mb-4">
+                <h6 class="mb-3">
+                  <a href="">
+                    <i class="fas fa-link"></i> Et harum quidem rerum facilis
+                  </a>
+                </h6>
+                <p>
+                  Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="page" id="content-profile">
+          <div class="container">
+            <div class="row align-items-center profile-header">
+              <div class="col-md-2">
+                <img
+                  alt="User's profile picture"
+                  class="rounded-circle img-fluid profile-image mb-3 mb-md-0"
+                />
+              </div>
+              <div class="col-md">
+                <h2 class="user-name"></h2>
+                <p class="lead text-muted user-email"></p>
+              </div>
+            </div>
+
+            <div class="row">
+              <pre class="rounded">
+                <code id="profile-data" class="json"></code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="bg-light text-center p-5">
+        <div class="logo"></div>
+        <p>
+          Project derived from the JavaScript SPA Sample project provided by
+          <a href="https://auth0.com">Auth0</a>
+        </p>
+      </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth0-theme.min.js"></script>
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/1.2/auth0-spa-js.production.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+window.mainContent = "#main-content"
+function loadPizzas(){
+$('<div class="wpb_wrapper" id="main-content2"><div class="woocommerce columns-3 "><ul class="products columns-3"><li class="woo-minimal-style product type-product post-5990 status-publish first instock product_cat-pizza has-post-thumbnail featured shipping-taxable purchasable product-type-simple"> <a hhref="https://www.ekko-wp.com/pizza/shop/quattro-stagioni/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><div class="woo-entry-image"><img width="800" height="800" src="./Ekko Pizza – Just another Ekko site_files/pizza-img-1.jpg" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" srcset="https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-1.jpg 800w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-1-150x150.jpg 150w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-1-300x300.jpg 300w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-1-768x768.jpg 768w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-1-320x320.jpg 320w" sizes="(max-width: 800px) 100vw, 800px"></div></a><div class="woo-entry-wrapper"><a hhref="https://www.ekko-wp.com/pizza/shop/quattro-stagioni/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><h2 class="woocommerce-loop-product__title">Quattro stagioni</h2></a><div class="categories"><a hhref="https://www.ekko-wp.com/pizza/shop/quattro-stagioni/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"></a><a hhref="https://www.ekko-wp.com/pizza/product-category/pizza/" rel="tag">Pizza</a></div> <span class="price"><span class="price-wrapper"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>20.00</span></span></span> <a hhref="https://www.ekko-wp.com/pizza/?add-to-cart=5990" data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="5990" data-product_sku="3751" aria-label="Add “Quattro stagioni” to your cart" rel="nofollow">Add to cart</a></div></li><li class="woo-minimal-style product type-product post-5989 status-publish instock product_cat-pizza has-post-thumbnail sale shipping-taxable purchasable product-type-simple"> <a hhref="https://www.ekko-wp.com/pizza/shop/cheddar-melt/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><div class="woo-entry-image"> <span class="onsale">Sale!</span> <img width="800" height="800" src="./Ekko Pizza – Just another Ekko site_files/pizza-img-2.jpg" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" srcset="https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-2.jpg 800w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-2-150x150.jpg 150w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-2-300x300.jpg 300w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-2-768x768.jpg 768w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-2-320x320.jpg 320w" sizes="(max-width: 800px) 100vw, 800px"></div></a><div class="woo-entry-wrapper"><a hhref="https://www.ekko-wp.com/pizza/shop/cheddar-melt/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><h2 class="woocommerce-loop-product__title">Cheddar melt</h2></a><div class="categories"><a hhref="https://www.ekko-wp.com/pizza/shop/cheddar-melt/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"></a><a hhref="https://www.ekko-wp.com/pizza/product-category/pizza/" rel="tag">Pizza</a></div> <span class="price"><span class="price-wrapper"><del><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>22.00</span></del> <ins><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>18.00</span></ins></span></span> <a hhref="https://www.ekko-wp.com/pizza/?add-to-cart=5989" data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="5989" data-product_sku="3750" aria-label="Add “Cheddar melt” to your cart" rel="nofollow">Add to cart</a></div></li><li class="woo-minimal-style product type-product post-5988 status-publish last instock product_cat-pizza has-post-thumbnail shipping-taxable purchasable product-type-simple"> <a hhref="https://www.ekko-wp.com/pizza/shop/american-hot/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><div class="woo-entry-image"><img width="800" height="800" src="./Ekko Pizza – Just another Ekko site_files/pizza-img-3.jpg" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" srcset="https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-3.jpg 800w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-3-150x150.jpg 150w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-3-300x300.jpg 300w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-3-768x768.jpg 768w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-3-320x320.jpg 320w" sizes="(max-width: 800px) 100vw, 800px"></div></a><div class="woo-entry-wrapper"><a hhref="https://www.ekko-wp.com/pizza/shop/american-hot/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><h2 class="woocommerce-loop-product__title">American hot</h2></a><div class="categories"><a hhref="https://www.ekko-wp.com/pizza/shop/american-hot/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"></a><a hhref="https://www.ekko-wp.com/pizza/product-category/pizza/" rel="tag">Pizza</a></div> <span class="price"><span class="price-wrapper"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>20.00</span></span></span> <a hhref="https://www.ekko-wp.com/pizza/?add-to-cart=5988" data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="5988" data-product_sku="3749" aria-label="Add “American hot” to your cart" rel="nofollow">Add to cart</a></div></li><li class="woo-minimal-style product type-product post-5987 status-publish first instock product_cat-pizza has-post-thumbnail shipping-taxable purchasable product-type-simple"> <a hhref="https://www.ekko-wp.com/pizza/shop/pepperoni-classic/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><div class="woo-entry-image"><img width="800" height="800" src="./Ekko Pizza – Just another Ekko site_files/pizza-img-4.jpg" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" srcset="https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-4.jpg 800w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-4-150x150.jpg 150w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-4-300x300.jpg 300w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-4-768x768.jpg 768w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-4-320x320.jpg 320w" sizes="(max-width: 800px) 100vw, 800px"></div></a><div class="woo-entry-wrapper"><a hhref="https://www.ekko-wp.com/pizza/shop/pepperoni-classic/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><h2 class="woocommerce-loop-product__title">Pepperoni classic</h2></a><div class="categories"><a hhref="https://www.ekko-wp.com/pizza/shop/pepperoni-classic/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"></a><a hhref="https://www.ekko-wp.com/pizza/product-category/pizza/" rel="tag">Pizza</a></div> <span class="price"><span class="price-wrapper"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>22.00</span></span></span> <a hhref="https://www.ekko-wp.com/pizza/?add-to-cart=5987" data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="5987" data-product_sku="3748" aria-label="Add “Pepperoni classic” to your cart" rel="nofollow">Add to cart</a></div></li><li class="woo-minimal-style product type-product post-5985 status-publish instock product_cat-pizza has-post-thumbnail featured shipping-taxable purchasable product-type-simple"> <a hhref="https://www.ekko-wp.com/pizza/shop/quattro-formaggi/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><div class="woo-entry-image"><img width="800" height="800" src="./Ekko Pizza – Just another Ekko site_files/pizza-img-5.jpg" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" srcset="https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-5.jpg 800w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-5-150x150.jpg 150w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-5-300x300.jpg 300w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-5-768x768.jpg 768w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-5-320x320.jpg 320w" sizes="(max-width: 800px) 100vw, 800px"></div></a><div class="woo-entry-wrapper"><a hhref="https://www.ekko-wp.com/pizza/shop/quattro-formaggi/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><h2 class="woocommerce-loop-product__title">Quattro formaggi</h2></a><div class="categories"><a hhref="https://www.ekko-wp.com/pizza/shop/quattro-formaggi/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"></a><a hhref="https://www.ekko-wp.com/pizza/product-category/pizza/" rel="tag">Pizza</a></div> <span class="price"><span class="price-wrapper"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>20.00</span></span></span> <a hhref="https://www.ekko-wp.com/pizza/?add-to-cart=5985" data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="5985" data-product_sku="3746" aria-label="Add “Quattro formaggi” to your cart" rel="nofollow">Add to cart</a></div></li><li class="woo-minimal-style product type-product post-5982 status-publish last instock product_cat-pizza has-post-thumbnail featured shipping-taxable purchasable product-type-simple"> <a hhref="https://www.ekko-wp.com/pizza/shop/rustica/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><div class="woo-entry-image"><img width="800" height="800" src="./Ekko Pizza – Just another Ekko site_files/pizza-img-6.jpg" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" srcset="https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-6.jpg 800w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-6-150x150.jpg 150w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-6-300x300.jpg 300w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-6-768x768.jpg 768w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2018/12/pizza-img-6-320x320.jpg 320w" sizes="(max-width: 800px) 100vw, 800px"></div></a><div class="woo-entry-wrapper"><a hhref="https://www.ekko-wp.com/pizza/shop/rustica/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><h2 class="woocommerce-loop-product__title">Rustica</h2></a><div class="categories"><a hhref="https://www.ekko-wp.com/pizza/shop/rustica/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"></a><a hhref="https://www.ekko-wp.com/pizza/product-category/pizza/" rel="tag">Pizza</a></div> <span class="price"><span class="price-wrapper"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>24.00</span></span></span> <a hhref="https://www.ekko-wp.com/pizza/?add-to-cart=5982" data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="5982" data-product_sku="3740" aria-label="Add “Rustica” to your cart" rel="nofollow">Add to cart</a></div></li></ul></div></div>').insertBefore(mainContent);
+$('#main-content').empty();
+$('#main-content3').empty();
+  window.mainContent = "#main-content2";
+     auth0.getUser().then(function(value) {
+     if (value.email_verified == false){{for (var k=0; k < $('.ajax_add_to_cart').length; k++){ $('.ajax_add_to_cart')[k].innerText = "Please verify your email!";}}}
+     }); 
+
+};
+
+function loadDrinks(){
+$('<div class="wpb_wrapper" id="main-content3"><div class="woocommerce columns-3 "><ul class="products columns-3"><li class="woo-minimal-style product type-product post-6045 status-publish first instock product_cat-drinks has-post-thumbnail featured shipping-taxable purchasable product-type-simple"> <a hhref="https://www.ekko-wp.com/pizza/shop/strawberry-shake/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><div class="woo-entry-image"><img width="800" height="800" src="https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2019/04/drinks-img-3.jpg" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" srcset="https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2019/04/drinks-img-3.jpg 800w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2019/04/drinks-img-3-150x150.jpg 150w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2019/04/drinks-img-3-300x300.jpg 300w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2019/04/drinks-img-3-768x768.jpg 768w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2019/04/drinks-img-3-320x320.jpg 320w" sizes="(max-width: 800px) 100vw, 800px"></div> </a><div class="woo-entry-wrapper"><a hhref="https://www.ekko-wp.com/pizza/shop/strawberry-shake/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><h2 class="woocommerce-loop-product__title">Strawberry Shake</h2></a><div class="categories"> <a hhref="https://www.ekko-wp.com/pizza/shop/strawberry-shake/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"></a><a hhref="https://www.ekko-wp.com/pizza/product-category/drinks/" rel="tag">Drinks</a></div> <span class="price"><span class="price-wrapper"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>8.00</span> </span> </span> <a hhref="?add-to-cart=6045" data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="6045" data-product_sku="103" aria-label="Add “Strawberry Shake” to your cart" rel="nofollow">Add to cart</a></div></li><li class="woo-minimal-style product type-product post-6044 status-publish instock product_cat-drinks has-post-thumbnail featured shipping-taxable purchasable product-type-simple"> <a hhref="https://www.ekko-wp.com/pizza/shop/chocolate-shake/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><div class="woo-entry-image"><img width="800" height="800" src="https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2019/04/drinks-img-2.jpg" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" srcset="https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2019/04/drinks-img-2.jpg 800w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2019/04/drinks-img-2-150x150.jpg 150w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2019/04/drinks-img-2-300x300.jpg 300w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2019/04/drinks-img-2-768x768.jpg 768w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2019/04/drinks-img-2-320x320.jpg 320w" sizes="(max-width: 800px) 100vw, 800px"></div> </a><div class="woo-entry-wrapper"><a hhref="https://www.ekko-wp.com/pizza/shop/chocolate-shake/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><h2 class="woocommerce-loop-product__title">Chocolate Shake</h2></a><div class="categories"> <a hhref="https://www.ekko-wp.com/pizza/shop/chocolate-shake/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"></a><a hhref="https://www.ekko-wp.com/pizza/product-category/drinks/" rel="tag">Drinks</a></div> <span class="price"><span class="price-wrapper"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>8.00</span> </span> </span> <a hhref="?add-to-cart=6044" data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="6044" data-product_sku="102" aria-label="Add “Chocolate Shake” to your cart" rel="nofollow">Add to cart</a></div></li><li class="woo-minimal-style product type-product post-6043 status-publish last instock product_cat-drinks has-post-thumbnail featured shipping-taxable purchasable product-type-simple"> <a hhref="https://www.ekko-wp.com/pizza/shop/orange-juice/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><div class="woo-entry-image"><img width="800" height="800" src="https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2019/04/drinks-img-1.jpg" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" srcset="https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2019/04/drinks-img-1.jpg 800w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2019/04/drinks-img-1-150x150.jpg 150w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2019/04/drinks-img-1-300x300.jpg 300w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2019/04/drinks-img-1-768x768.jpg 768w, https://www.ekko-wp.com/pizza/wp-content/uploads/sites/28/2019/04/drinks-img-1-320x320.jpg 320w" sizes="(max-width: 800px) 100vw, 800px"></div> </a><div class="woo-entry-wrapper"><a hhref="https://www.ekko-wp.com/pizza/shop/orange-juice/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><h2 class="woocommerce-loop-product__title">Orange juice</h2></a><div class="categories"> <a hhref="https://www.ekko-wp.com/pizza/shop/orange-juice/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"></a><a hhref="https://www.ekko-wp.com/pizza/product-category/drinks/" rel="tag">Drinks</a></div> <span class="price"><span class="price-wrapper"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>4.00</span> </span> </span> <a hhref="?add-to-cart=6043" data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="6043" data-product_sku="101" aria-label="Add “Orange juice” to your cart" rel="nofollow">Add to cart</a></div></li></ul></div></div>').insertBefore(mainContent);
+$('#main-content').empty();
+$('#main-content2').empty();
+  window.mainContent = "#main-content3"
+     auth0.getUser().then(function(value) {
+     if (value.email_verified == false){{for (var k=0; k < $('.ajax_add_to_cart').length; k++){ $('.ajax_add_to_cart')[k].innerText = "Please verify your email!";}}}
+     });
+};
+// get basic userInfo: 
+//auth0.getUser().then(function(value) {console.log(value)});
+    </script>
+  </body>
+</html>
