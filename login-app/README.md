@@ -6,7 +6,7 @@ After cloning the repository, run:
 $ npm install
 ```
 
-This will install all of the necessary packages in order for the sample to run.
+This will install all of the necessary packages in order for the app to run.
 
 ### Running the Application
 
