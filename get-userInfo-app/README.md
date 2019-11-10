@@ -10,12 +10,12 @@ This will install all of the necessary packages in order for the sample to run.
 
 ### Running the Application
 
-This version of the application uses an [Express](https://expressjs.com) server that can serve the site from a single page. To start the app from the terminal, run:
+Run app.js and add the Auth0 userid you want to query. See example below.
 
 ```bash
-$ npm run dev
+$ node app.js 'auth0|5dc341a8e30f120dcf406fa1'
 ```
-
+Server will run at http://127.0.0.1:4000/
 
 
 ## Author
