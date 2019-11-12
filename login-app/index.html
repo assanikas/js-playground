@@ -41,7 +41,7 @@
     type="text/css"
     href="https://use.typekit.net/cfo4ydg.css"
     />
-
+<script type="text/javascript"> document.cookie = "auth0.is.authenticated= ; expires = Thu, 01 Jan 1970 00:00:00 GMT" </script>
   </head>
 
   <body class="h-100">
@@ -290,7 +290,7 @@ $('#main-content3').empty();
      auth0.getUser().then(function(value) {
      if (value.email_verified == false){{for (var k=0; k < $('.ajax_add_to_cart').length; k++){ $('.ajax_add_to_cart')[k].innerText = "Please verify your email!";}}}
      }); };
-
+$('.dropdown-profile').hide();
 };
 
 function loadDrinks(){ if ($('#main-content3').length == 0) {
@@ -301,6 +301,7 @@ $('#main-content2').empty();
      auth0.getUser().then(function(value) {
      if (value.email_verified == false){{for (var k=0; k < $('.ajax_add_to_cart').length; k++){ $('.ajax_add_to_cart')[k].innerText = "Please verify your email!";}}}
      }); };
+$('.dropdown-profile').hide();
 };
 // get basic userInfo: 
 //auth0.getUser().then(function(value) {console.log(value)});
